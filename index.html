@@ -90,6 +90,35 @@ body.touch-mode .touch-only { display: block; }
 .menu-panel ul{text-align:left;font-size:12px;line-height:1.6;color:#c9c0dd;padding-left:18px;margin:8px 0 12px}.menu-panel li b{color:#ffb47c}
 @media(max-width:520px){.menu-panel h2.t-logo{font-size:27px}}
 @media(prefers-reduced-motion:reduce){.embers i,.t-logo{animation:none}}
+.game-menus.is-pause{background:rgba(7,5,13,.74);backdrop-filter:blur(3px)}
+.menu-panel{animation:mpIn .22s ease-out}.game-menus.keep .menu-panel{animation:none}
+@keyframes mpIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+.menu-panel.wide{width:min(560px,100%)}
+.menu-panel button:focus-visible{outline:2px solid #58e0c8;outline-offset:1px}
+.menu-actions button,.row2 button,.row3 button,.slot-grid button,.seg button{transition:border-color .12s,transform .12s,background .12s}
+.menu-actions button:hover:not(:disabled),.row2 button:hover,.row3 button:hover,.slot-grid button:hover:not(:disabled){border-color:#58e0c8;background:#2a2142;transform:translateY(-1px)}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.row3 button{font:600 11px var(--mono);padding:11px 4px;background:#211a32;border:1px solid #514064;color:#eee8fa;border-radius:3px}
+.tip{margin:12px 0 0;font-size:10.5px;color:#8d84a8;line-height:1.4}.tip b{color:#58e0c8;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0 2px}
+.chip{font:600 10px var(--mono);letter-spacing:.04em;color:#c9c0dd;background:#1d1630;border:1px solid #3a2f52;padding:5px 8px;border-radius:2px}.chip b{color:#ffb47c}
+.sec{font:700 10px var(--display);letter-spacing:.18em;color:#58e0c8;margin:14px 0 6px;text-align:left}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin:4px 0 8px}
+.seg button{font:600 11px var(--mono);padding:10px 4px;background:#1b1429;border:1px solid #3d3152;color:#a79cbd;border-radius:0;margin-left:-1px}
+.seg button:first-child{border-radius:3px 0 0 3px;margin-left:0}.seg button:last-child{border-radius:0 3px 3px 0}
+.seg button.on{background:#352240;border-color:#ff8a3d;color:#ffb47c;position:relative;z-index:1}.seg button:disabled{opacity:.45;cursor:not-allowed}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;font-size:12px;color:#c9c0dd;text-align:left}
+.opt-row>span{flex:1}.opt-row .seg{margin:0;min-width:170px}
+.bars{display:grid;gap:5px;margin:10px 0 4px}
+.bar-r{display:grid;grid-template-columns:70px 1fr 48px;gap:8px;align-items:center;font-size:10px;color:#a79cbd;text-align:left}
+.bar-r i{display:block;height:7px;background:#0d0916;border:1px solid #382d4b;position:relative}.bar-r i s{position:absolute;left:0;top:0;bottom:0}.bar-r em{font-style:normal;text-align:right;color:#eee8fa}
+.codex{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left;overflow:auto}
+.cx{background:#1b1429;border:1px solid #382d4b;padding:7px 8px;border-radius:3px;font-size:10.5px;color:#c9c0dd;line-height:1.35}.cx b{display:block;color:#eee8fa;font-size:11px;margin-bottom:2px}.cx small{display:block;color:#8d84a8;font-size:10px}
+.kbd{font:600 10px var(--mono);color:#a79cbd;border:1px solid #4a3b63;border-bottom-width:2px;padding:1px 5px;border-radius:3px;background:#1d1630}
+.hint{margin-top:12px;font-size:10px;color:#6f6688;letter-spacing:.04em}
+.danger{border-color:#8a3040!important;color:#ff9aa8!important}.danger:hover:not(:disabled){border-color:#ff5a6a!important;background:#2e1722!important}
+@media(max-width:520px){.opt-row{flex-direction:column;align-items:stretch}.opt-row .seg{min-width:0}.codex{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.menu-panel{animation:none}}
 </style>
 
 <main class="wrap">
@@ -117,11 +146,10 @@ body.touch-mode .touch-only { display: block; }
       <div class="pad" id="padR"><i></i></div>
     </div>
   </div>
-  <p class="help pc-only"><b>Mover</b> WASD o flechas · <b>Disparar o atacar</b> clic o J · <b>Esquivar</b> Espacio (invulnerable un instante) · <b>Cambiar arma</b> Q o clic derecho · <b>Usar</b> E (cofres y tienda) · <b>Bomba</b> B · <b>Pausa</b> P. Veinte niveles y jefes, cámara secreta, familiar espectral, eventos aleatorios, reliquias, misiones, críticos y rachas.</p>
+  <p class="help pc-only"><b>Mover</b> WASD o flechas · <b>Disparar o atacar</b> clic o J · <b>Esquivar</b> Espacio (invulnerable un instante) · <b>Cambiar arma</b> Q o clic derecho · <b>Usar</b> E (cofres y tienda) · <b>Bomba</b> B · <b>Pausa</b> P. Veinte niveles y jefes, cámara secreta, familiar espectral, eventos aleatorios, reliquias, misiones, críticos, rachas y opciones de audio y juego.</p>
   <p class="help touch-only"><b>Stick izquierdo</b> mueve · <b>stick derecho</b> apunta y dispara mientras lo mantienes · <b>Esquivar</b>, <b>Cambiar arma</b>, <b>Usar</b> (cofres y tienda) y <b>Bomba</b> están en los botones del centro. Gira el celular en horizontal y toca Pantalla completa para jugar con los controles sobre el juego.</p>
 </main>
 
-<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 (() => {
 'use strict';
@@ -288,9 +316,11 @@ const UPGRADES = [
 ];
 
 /* ---------- audio ---------- */
-let AC = null, muted = false;
+let AC = null, muted = false, VOLM = 1;
+const OPT = { vol: 1, music: true, shake: true };
 function tone(f1, f2, dur, type, vol) {
   if (muted) return;
+  vol *= VOLM;
   try {
     if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
     if (AC.state === 'suspended') AC.resume();
@@ -338,7 +368,6 @@ const vig = document.createElement('canvas'); vig.width = W; vig.height = H;
   g.fillStyle = gr; g.fillRect(0, 0, W, H);
 })();
 const P = {};
-let coopRole = "solo", coopPeer = null, coopConn = null, coopCode = "", coopStatus = "", P2 = null, remoteView = null, coopInput = {mx:0,my:0,aim:0,fire:false}, coopSendT = 0, coopSnapT = 0, coopLastInput = 0, coopApplying = false, coopLeaving = false, coopLastFloor = -1, coopLastRoom = -1, coopGuestDrawT = 0;
 let best = { floor: 0, souls: 0 };
 try { const s = localStorage.getItem('cripta_best'); if (s) best = JSON.parse(s); } catch (e) { /* sin almacenamiento */ }
 function saveBest() {
@@ -902,6 +931,7 @@ let musicT = 0, musicStep = 0;
 const MUSIC_NOTES = [110, 130.8, 164.8, 146.8, 110, 130.8, 196, 164.8];
 function updMusic(dt) {
   musicT -= dt; if (musicT > 0) return;
+  if (!OPT.music) { musicT = 0.5; return; }
   const boss = room && room.type === 'boss', k = Math.pow(2, (floorN % 6) / 12), f = MUSIC_NOTES[musicStep % 8] * k;
   tone(f, f * 0.98, 0.4, 'triangle', 0.022);
   if (boss && musicStep % 2) tone(f * 2, f * 2, 0.15, 'square', 0.008);
@@ -954,7 +984,7 @@ function fireWeapon(w) {
     const a = P.aim + off;
     pb.push({
       x: P.x + Math.cos(P.aim) * (w.len * 0.8), y: P.y - 4 + Math.sin(P.aim) * (w.len * 0.8), vx: Math.cos(a) * w.spd, vy: Math.sin(a) * w.spd,
-      dmg: (w.dmg + (P.flatDmg || 0)) * P.dmgM * DMB(), life: w.life, r: w.pierce ? 4 : 3, col: w.col, pierce: !!w.pierce, homing: !!w.homing, slow: !!w.slow, chain: !!w.chain, hit: new Set()
+      dmg: (w.dmg + (P.flatDmg || 0)) * P.dmgM * DMB(), life: w.life, r: w.pierce ? 4 : 3, col: w.col, pierce: !!w.pierce, homing: !!w.homing, slow: !!w.slow, chain: !!w.chain, poison: !!w.poison, hit: new Set()
     });
   }
   if (w.cost >= 1 && w.n === 1 && !w.pierce && !w.homing) parts.push({ x: P.x, y: P.y - 2, vx: -Math.sin(P.aim) * 60 + rnd(-20, 20), vy: Math.cos(P.aim) * 60 + rnd(-20, 20) - 20, life: 0.4, max: 0.4, col: '#e8b73a', size: 2 });
@@ -1917,6 +1947,9 @@ function drawWeaponLocal(id, col) {
     case 'doble': RR(0, -2, 8, 6, '#6a4a2a'); RR(8, -4, 22, 3, '#4a4a56'); RR(8, 1, 22, 3, '#4a4a56'); RR(30, -4, 3, 3, '#2a2a30'); RR(30, 1, 3, 3, '#2a2a30'); break;
     case 'crossbow': RR(0, -2, 10, 5, '#6a4a2a'); RR(10, -3, 12, 5, '#4a4a56'); RR(16, -10, 3, 20, '#8a5a30'); ln(17, -10, 24, 0, 1, '#e9e4f5'); ln(17, 10, 24, 0, 1, '#e9e4f5'); RR(14, -1, 16, 2, col); poly([30, -3, 36, 0, 30, 3], col); break;
     case 'plasma': RR(0, -2, 7, 6, '#2a3a44'); RR(7, -4, 16, 8, '#3a5a5a'); RR(7, -4, 16, 1, col); RR(23, -3, 8, 2, '#26262c'); RR(23, 1, 8, 2, '#26262c'); blobF(30, 0, 2 + Math.sin(time * 14), 2, col); break;
+    case 'venom': RR(0, -1, 24, 3, '#3a5a2a'); RR(20, -3, 3, 7, '#9dff5a'); blob(27, 0, 4 + Math.sin(time * 8), 4 + Math.sin(time * 8), col, OUT); RR(26, -2, 2, 2, '#fff'); break;
+    case 'minigun': RR(0, -2, 8, 6, '#3a3a44'); RR(8, -5, 14, 10, '#4a4a56'); RR(8, -5, 14, 1, '#8a8a9a'); for (let i = -1; i <= 1; i++) RR(22, i * 3 - 1, 12, 2, '#26262c'); RR(34, -4, 2, 8, col); break;
+    case 'hacha': RR(0, -1, 26, 3, '#6a4a2a'); poly([24, -9, 36, -4, 36, 5, 24, 10, 28, 0], '#b8c0d0'); poly([28, -6, 34, -3, 34, 3, 28, 6], '#e8f4ff'); RR(2, -2, 3, 5, '#f0c040'); break;
     case 'orb': RR(0, -1, 24, 3, '#6a4a2a'); RR(18, -2, 3, 5, '#f0c040'); blob(26, 0, 5 + Math.sin(time * 8), 5 + Math.sin(time * 8), col, OUT); RR(25, -2, 2, 2, '#fff'); break;
   }
 }
@@ -2257,7 +2290,6 @@ function draw() {
     ctx.restore();
   }});
   if (!P.dead) items.push({ y: P.y, f: () => drawPlayer() });
-  if(coopRole==='host'&&P2)items.push({y:P2.y,f:()=>drawRemoteAvatar(P2)});else if(coopRole==='guest'&&remoteView)items.push({y:remoteView.y,f:()=>drawRemoteAvatar(remoteView)});
   items.sort((a, b) => a.y - b.y); items.forEach(i => i.f());
   drawSwing(); drawBullets(); drawBolts(); drawParts(); drawAmb();
   ctx.restore();
@@ -2268,7 +2300,7 @@ function draw() {
   else if (state === 'character') drawCharacterSelect();
   else if (state === 'select') drawSelect();
   else if (state === 'upgrade') drawUpgrade();
-  else if (state === 'pause') overlay('Pausa', 'La cripta espera.', [isTouch ? 'Toca para continuar' : 'Pulsa P o haz clic para continuar']);
+  else if (state === 'pause') { /* menú HTML */ }
   else if (state === 'dead') overlay('Has caído', 'Nivel ' + floorN + ' · ' + P.souls + ' almas · ' + P.kills + ' enemigos', ['Héroe nivel ' + (P.level || 1) + ' · Mejor racha x' + (P.bestCombo || 0) + ' · Reliquias ' + ((P.relics || []).length), 'Mejor marca: nivel ' + best.floor + ' · ' + best.souls + ' almas', isTouch ? 'Toca para reintentar' : 'Pulsa Enter o haz clic para reintentar'], '#ff5a6a');
   else if (state === 'win') overlay('Cripta limpia', 'Derrotaste a los guardianes y al Rey Errante con ' + P.souls + ' almas. Tiempo: ' + formatRunTime(runElapsed) + '.', ['Mejor marca: nivel ' + best.floor + ' · ' + best.souls + ' almas', isTouch ? 'Toca para jugar de nuevo' : 'Pulsa Enter o haz clic para jugar de nuevo'], '#58e0c8');
   if (fade > 0) { ctx.fillStyle = 'rgba(14,11,22,' + clamp(fade / 0.4, 0, 1) + ')'; ctx.fillRect(0, 0, W, H); }
@@ -2286,87 +2318,6 @@ function saveSnapshot(){
 function saveSlot(i){ if(state!=='play'&&state!=='pause') return false; const a=readSlots(); a[i]=saveSnapshot(); const ok=writeSlots(a); if(ok) { menuPage='saved'; renderMenu(); } return ok; }
 function loadSlot(i){ const d=readSlots()[i]; if(!d) return; try { Object.assign(P,d.P); floorN=d.floorN; rooms=d.rooms; roomI=d.roomI; theme=THEMES[(floorN-1)%THEMES.length]||THEMES[0]; room=rooms[roomI]; enemies=d.enemies||[]; spawns=d.spawns||[]; eb=d.eb||[]; pb=d.pb||[]; drops=d.drops||[]; parts=d.parts||[]; texts=d.texts||[]; dying=d.dying||[]; amb=d.amb||[]; time=d.time||0; runElapsed=d.runElapsed||0; runStarted=performance.now()-runElapsed*1000; hazards=[]; barrels=[]; buildGrid(); if(d.grid) grid=d.grid; state='play'; menuRoot.hidden=true; banner={t:1.6,text:'Partida cargada',sub:'Nivel '+floorN}; syncTouch(); } catch(e){ alert('No se pudo cargar este slot.'); } }
 function slotMarkup(mode){ const a=readSlots(); return '<div class="slot-grid">'+a.map((d,i)=>'<button data-slot="'+i+'" '+(!d&&mode==='load'?'disabled':'')+'><b>Slot '+(i+1)+'</b><small>'+(d?'Nivel '+d.floorN+' · '+(d.P?.souls||0)+' almas':'Vacío')+'</small></button>').join('')+'</div>'; }
-
-/* ---------- cooperativo online por salas ---------- */
-function cloneData(v){return JSON.parse(JSON.stringify(v,(k,x)=>x instanceof Set?Array.from(x):x));}
-function initP2(){
-  P2=cloneData(P); P2.x=Math.max(48,P.x-22); P2.y=Math.min(H-48,P.y+28); P2.hp=P2.maxhp; P2.dead=false; P2.inv=1; P2.cd=0; P2.ghost=[]; P2.character='caballero'; P2.color='#58e0c8';
-}
-function lobbyRefresh(){if(state==='title'&&menuPage==='coopRoom')renderMenu();}
-function coopSay(msg){coopStatus=msg;lobbyRefresh();if(!(state==='title'&&menuPage==='coopRoom'))toast(msg,'♟ COOP: ');}
-function loadPeer(){return new Promise((resolve,reject)=>{if(window.Peer)return resolve();let old=document.querySelector('script[data-peerjs]');if(old){old.addEventListener('load',()=>resolve(),{once:true});old.addEventListener('error',()=>reject(new Error('No se pudo cargar PeerJS')),{once:true});return;}const sc=document.createElement('script');sc.src='https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';sc.dataset.peerjs='1';sc.onload=()=>window.Peer?resolve():reject(new Error('PeerJS no disponible'));sc.onerror=()=>reject(new Error('No se pudo cargar el servicio online'));document.head.appendChild(sc);});}
-function roomCode(){return Math.random().toString(36).slice(2,8).toUpperCase().padEnd(6,'X');}
-function connectCoop(conn,role){
-  coopConn=conn;coopRole=role;let opened=false;
-  conn.on('open',()=>{opened=true;if(role==='host'){initP2();coopSay('¡Jugador conectado! Ya pueden comenzar la historia.');try{conn.send({type:'hello',code:coopCode});}catch(e){coopSay('Conectó, pero no se pudo confirmar la sala.');}}else{coopSay('¡Conectado! Esperando que el anfitrión inicie la historia…');try{conn.send({type:'join'});}catch(e){coopSay('No se pudo enviar la confirmación.');}}});
-  conn.on('data',msg=>{
-    if(role==='host'&&msg&&msg.type==='input'){coopInput={mx:Math.max(-1,Math.min(1,Number(msg.mx)||0)),my:Math.max(-1,Math.min(1,Number(msg.my)||0)),aim:Number(msg.aim)||0,fire:!!msg.fire};coopLastInput=performance.now();}
-    if(role==='guest'&&msg&&msg.type==='snapshot')applyCoopSnapshot(msg.data);
-    if(msg&&msg.type==='hello'&&role==='guest'){coopCode=String(msg.code||coopCode);coopSay('Conectado a la sala '+coopCode+' · esperando al anfitrión');}
-  });
-  conn.on('close',()=>{if(coopLeaving)return;if(coopConn===conn)coopConn=null;coopInput={mx:0,my:0,aim:0,fire:false};remoteView=null;P2=null;if(role==='host'){coopRole='host';coopSay('El otro jugador se desconectó. La sala sigue abierta; puede volver a entrar con el mismo código.');}else{coopRole='solo';if(coopPeer){try{coopPeer.destroy();}catch(e){}coopPeer=null;}state='title';menuPage='coop';coopSay('Se perdió la conexión. Volvé a entrar con el código de la sala.');renderMenu();}});
-  conn.on('error',e=>{coopSay('Error de conexión: '+(e&&e.message?e.message:'revisá internet y el código'));});
-  setTimeout(()=>{if(!opened&&role==='guest'&&coopConn===conn){coopSay('No se pudo conectar. Comprobá el código y que el anfitrión siga en la sala.');try{conn.close();}catch(e){}}},22000);
-}
-async function createCoopRoom(){
-  menuPage='coopRoom';coopLeaving=false;coopStatus='Preparando una sala…';renderMenu();
-  try{await loadPeer();if(coopPeer){try{coopPeer.destroy();}catch(e){}}coopPeer=null;coopConn=null;coopRole='host';
-    let created=false,lastError=null;
-    for(let attempt=0;attempt<5&&!created;attempt++){
-      coopCode=roomCode();const candidate=new Peer('ce'+coopCode.toLowerCase());coopPeer=candidate;
-      const result=await new Promise(resolve=>{let settled=false;const finish=v=>{if(!settled){settled=true;resolve(v);}};candidate.on('open',id=>finish({ok:true,id}));candidate.on('error',e=>finish({ok:false,error:e}));setTimeout(()=>finish({ok:false,error:new Error('Tiempo agotado al crear la sala')}),12000);});
-      if(result.ok){created=true;candidate.on('connection',c=>{if(coopConn){c.on('open',()=>c.close());return;}connectCoop(c,'host');});candidate.on('disconnected',()=>{coopStatus='Se interrumpió la señalización. Intentando reconectar…';lobbyRefresh();try{candidate.reconnect();}catch(e){}});candidate.on('close',()=>{if(coopRole==='host'&&!coopConn)coopSay('La sala se cerró. Creá otra para seguir.');});}
-      else{lastError=result.error;try{candidate.destroy();}catch(e){}coopPeer=null;if(!(lastError&&lastError.type==='unavailable-id'))break;}
-    }
-    if(!created){coopRole='solo';throw lastError||new Error('No se pudo reservar un código de sala');}
-    coopStatus='Sala creada. Esperando al segundo jugador…';renderMenu();
-  }catch(e){coopRole='solo';coopStatus='No se pudo crear la sala: '+(e&&e.message?e.message:'error de conexión');renderMenu();}
-}
-async function joinCoopRoom(){
-  const code=(prompt('Escribí el código de sala de 6 caracteres:')||'').trim().toUpperCase();if(!/^[A-Z0-9]{6}$/.test(code)){coopStatus='Código inválido. Debe tener 6 letras o números.';renderMenu();return;}
-  menuPage='coopRoom';coopLeaving=false;coopCode=code;coopStatus='Conectando con la sala '+code+'…';renderMenu();
-  try{await loadPeer();if(coopPeer){try{coopPeer.destroy();}catch(e){}}coopConn=null;coopPeer=new Peer();coopPeer.on('error',e=>{coopSay('No se pudo conectar: '+(e&&e.message?e.message:'error de señalización'));});coopPeer.on('open',()=>{const c=coopPeer.connect('ce'+code.toLowerCase(),{reliable:true,serialization:'json'});connectCoop(c,'guest');});}
-  catch(e){coopRole='solo';coopSay(e&&e.message?e.message:'No se pudo iniciar el multijugador.');}
-}
-function startCoopStory(){if(coopRole!=='host'||!coopPeer||coopPeer.destroyed){coopSay('Solo el anfitrión puede iniciar la historia.');return;}if(!coopConn||!coopConn.open){coopSay('Esperá a que se conecte el otro jugador antes de comenzar.');return;}menuRoot.hidden=true;state='character';characterSel=0;chosenCharacter='ninja';selIdx=0;}
-function updateRemoteP2(dt){
-  if(!P2||!coopConn||!coopConn.open)return;
-  if(performance.now()-coopLastInput>1800)coopInput={mx:0,my:0,aim:0,fire:false};
-  const ox=P2.x,oy=P2.y,m=Math.hypot(coopInput.mx,coopInput.my)||1;
-  moveEnt(P2,coopInput.mx/m*125*(P2.spdM||1)*dt,coopInput.my/m*125*(P2.spdM||1)*dt,P2.r||7);
-  P2.vx=(P2.x-ox)/Math.max(dt,.001);P2.vy=(P2.y-oy)/Math.max(dt,.001);P2.moving=Math.hypot(P2.vx,P2.vy)>20;P2.w=(P2.w||0)+dt*14;P2.aim=coopInput.aim;P2.face=Math.cos(P2.aim)>=0?1:-1;P2.cd=Math.max(0,(P2.cd||0)-dt);P2.en=Math.min(P2.maxen||100,(P2.en||0)+dt*(P2.enRegen||1.65));P2.inv=Math.max(0,(P2.inv||0)-dt);
-  if(coopInput.fire&&P2.cd<=0){const backup=cloneData(P);try{Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,cloneData(P2));fireWeapon(WEAPONS[P.weapons[P.wi]]||WEAPONS.pistol);Object.assign(P2,cloneData(P));}finally{Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,backup);}}
-  P2.hitCd=Math.max(0,(P2.hitCd||0)-dt);if(P2.hitCd<=0){const e=enemies.find(e=>e.hp>0&&dist(e,P2)<e.r+P2.r+2);if(e){P2.hp=Math.max(0,P2.hp-1);P2.hitCd=.8;P2.inv=.45;burst(P2.x,P2.y,'#58e0c8',8,80);if(P2.hp<=0){P2.hp=P2.maxhp;P2.x=T*2.2;P2.y=H/2;P2.inv=2;toast('¡Tu compañero volvió a la cripta!');}}}
-}
-function coopSnapshot(){
-  // Enviar solo el estado necesario para jugar: los efectos cosméticos se dibujan localmente.
-  const changed=coopLastFloor!==floorN||coopLastRoom!==roomI;
-  coopLastFloor=floorN;coopLastRoom=roomI;
-  return {floorN,roomI,rooms:changed?rooms:undefined,grid:changed?grid:undefined,themeIndex:(floorN-1)%THEMES.length,state,runElapsed,time,
-    P,P2,enemies,eb,pb:pb.map(b=>({...b,hit:b.hit instanceof Set?Array.from(b.hit):(b.hit||[])})),drops,hazards,barrels,MUT,banner,roomData:room};
-}
-function applyCoopSnapshot(d){
-  if(!d||coopApplying)return;coopApplying=true;
-  try{
-    const changed=floorN!==d.floorN||roomI!==d.roomI;floorN=d.floorN;roomI=d.roomI;
-    if(d.rooms)rooms=d.rooms;room=rooms[roomI]||d.roomData||room;
-    theme=THEMES[d.themeIndex]||THEMES[0];runElapsed=d.runElapsed||0;time=d.time||0;
-    if(d.P2)Object.assign(P,d.P2);remoteView=d.P||remoteView;P2=d.P2||P2;
-    enemies=d.enemies||[];eb=d.eb||[];pb=(d.pb||[]).map(b=>({...b,hit:new Set(b.hit||[])}));drops=d.drops||[];
-    // Partículas, textos flotantes y sombras no viajan por red: ahorra datos y CPU en móviles.
-    parts=[];texts=[];dying=[];amb=[];spawns=[];
-    hazards=d.hazards||[];barrels=d.barrels||[];MUT=d.MUT||null;banner=d.banner||null;state=d.state||'title';
-    if(changed&&d.grid){grid=d.grid;}
-    if(['play','upgrade','chestChoice','shop','altar','dead','win','character','select'].includes(state))menuRoot.hidden=true;
-  }catch(e){console.warn('snapshot coop',e);}finally{coopApplying=false;}
-}
-function sendCoopInput(){if(!coopConn||!coopConn.open||coopRole!=='guest')return;const kd=c=>keys.has(c);let mx=(kd('KeyD')||kd('ArrowRight')?1:0)-(kd('KeyA')||kd('ArrowLeft')?1:0)+pad.mx,my=(kd('KeyS')||kd('ArrowDown')?1:0)-(kd('KeyW')||kd('ArrowUp')?1:0)+pad.my;const mm=Math.hypot(mx,my);if(mm>1){mx/=mm;my/=mm;}const aim=pad.aimOn?Math.atan2(pad.ay,pad.ax):Math.atan2(mouse.y-(P.y||H/2),mouse.x-(P.x||W/2));const fire=pad.aimOn||mouse.down||kd('KeyJ');const now=performance.now();if(now-coopSendT>110){coopSendT=now;try{const ch=coopConn.dataChannel;if(!ch||ch.bufferedAmount<24000)coopConn.send({type:'input',mx,my,aim,fire});}catch(e){}}}
-function drawRemoteAvatar(rp){if(!rp||!Number.isFinite(rp.x)||!Number.isFinite(rp.y))return;/* Copia superficial: dibujar al compañero no necesita serializar todo el personaje en cada frame. */const save={...P};for(const k of Object.keys(P))delete P[k];Object.assign(P,rp);ctx.save();ctx.globalAlpha=.92;ctx.strokeStyle='#58e0c8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(P.x,P.y,13+Math.sin(time*7)*1.5,0,Math.PI*2);ctx.stroke();drawPlayer();ctx.restore();for(const k of Object.keys(P))delete P[k];Object.assign(P,save);}
-const _coopBeginRun=beginRun;beginRun=function(i){_coopBeginRun(i);if(coopRole==='host'&&coopConn)initP2();};
-const _coopEnterRoom=enterRoom;enterRoom=function(i){_coopEnterRoom(i);if(P2){P2.x=T*2.2;P2.y=H/2+30;P2.inv=1;}};
-const _coopUpdate=update;update=function(dt){if(coopRole==='guest'){sendCoopInput();return;} _coopUpdate(dt);if(coopRole==='host'&&coopConn&&coopConn.open){if(state==='play')updateRemoteP2(dt);if(P2&&state!=='title'){coopSnapT+=dt;if(coopSnapT>=.20){coopSnapT=0;try{const ch=coopConn.dataChannel;if(!ch||ch.bufferedAmount<48000)coopConn.send({type:'snapshot',data:coopSnapshot()});}catch(e){}}}}};
-function coopLobbyHTML(){const connected=!!(coopConn&&coopConn.open);const host=coopRole==='host';return '<section class="menu-panel"><h2>SALA COOPERATIVA</h2><p>Compartí este código con tu compañero:</p><div style="font:700 34px var(--mono);letter-spacing:.18em;color:#58e0c8;background:#0d0a16;border:1px solid #514064;padding:12px;margin:10px 0">'+coopCode+'</div><button data-action="copyCode">COPIAR CÓDIGO</button><div style="text-align:left;background:#100c19;border:1px solid #382d4b;padding:12px;margin:12px 0;font-size:12px"><b>JUGADORES ( '+(connected?2:1)+' / 2 )</b><p style="margin:8px 0;color:#7dffb0">● Anfitrión — conectado</p><p style="margin:8px 0;color:'+(connected?'#7dffb0':'#a79cbd')+'">'+(connected?'●':'○')+' Jugador 2 — '+(connected?'conectado':'esperando…')+'</p></div><p>'+(coopStatus||'Esperando al segundo jugador…')+'</p>'+(host?'<button class="primary" data-action="startCoop">COMENZAR HISTORIA</button>':'<p>El anfitrión iniciará la historia cuando estén listos.</p>')+'<button class="menu-back" data-action="leaveRoom">SALIR DE LA SALA</button></section>';}
-
 function renderMenu(){
   if(state==='altar'){
     menuRoot.hidden=false;
@@ -2382,8 +2333,6 @@ function renderMenu(){
     else if(menuPage==='ach') menuRoot.innerHTML=achHTML();
     else if(menuPage==='howto') menuRoot.innerHTML='<section class="menu-panel"><h2>CÓMO JUGAR</h2><ul><li><b>Mover</b> WASD o flechas · <b>Disparar</b> clic o J · <b>Esquivar</b> Espacio</li><li><b>Q</b> o clic derecho cambia de arma · <b>E</b> usa cofres, tienda y altar · <b>B</b> bomba · <b>P</b> pausa</li><li>Limpia cada sala para abrir las puertas y bajar de nivel; cada cinco niveles te espera un guardián.</li><li>Busca la <b>cámara secreta</b>, el <b>mercader</b> y el <b>altar prohibido</b>: toda ofrenda tiene un precio.</li><li><b>Mutaciones</b>: desde el nivel 2 la cripta cambia las reglas (oscuridad, frenesí, gigantes o luna de sangre). Más riesgo, más experiencia.</li><li>Encadena muertes para subir la <b>racha</b> y recoge las <b>reliquias</b> que mejoran tu build.</li></ul><button class="menu-back" data-action="back">VOLVER</button></section>';
     else if(menuPage==='records'){const s=readStats(),n=readSlots().filter(Boolean).length;menuRoot.innerHTML='<section class="menu-panel"><h2>RÉCORDS</h2><ul><li>Mejor nivel alcanzado: <b>'+best.floor+'</b></li><li>Almas en esa marca: <b>'+best.souls+'</b></li><li>Partidas iniciadas: <b>'+(s.runs||0)+'</b></li><li>Espacios de guardado usados: <b>'+n+' / 5</b></li></ul><button class="menu-back" data-action="back">VOLVER</button></section>';}
-    else if(menuPage==='coop') menuRoot.innerHTML='<section class="menu-panel"><h2>COOPERATIVO ONLINE</h2><p>Jugá la historia con otra persona. Creá una sala y compartí el código de invitación.</p><div class="menu-actions"><button class="primary" data-action="createRoom">CREAR SALA</button><button data-action="joinRoom">UNIRSE CON CÓDIGO</button></div><p>'+(coopStatus||'Hasta 2 jugadores · historia compartida')+'</p><button class="menu-back" data-action="back">VOLVER</button></section>' ;
-    else if(menuPage==='coopRoom') menuRoot.innerHTML=coopLobbyHTML();
     else if(menuPage==='controls') menuRoot.innerHTML='<section class="menu-panel"><h2>CONFIGURAR CONTROLES</h2><p>Elegí cómo querés jugar. Para joystick, conectalo antes de seleccionar esa opción.</p><div class="menu-actions"><button data-mode="pc">PC · TECLADO Y MOUSE</button><button data-mode="touch">CELULAR · JOYSTICKS TÁCTILES</button><button data-mode="pad">JOYSTICK FÍSICO</button></div><button class="menu-back" data-action="back">VOLVER</button></section>';
     else if(menuPage==='saved') menuRoot.innerHTML='<section class="menu-panel"><h2>PARTIDA GUARDADA</h2><p>Tu aventura quedó guardada correctamente.</p><button class="menu-back" data-action="pauseback">VOLVER A PAUSA</button></section>';
     else if(menuPage==='load') menuRoot.innerHTML='<section class="menu-panel"><h2>CARGAR PARTIDA</h2><p>Elegí uno de los cinco espacios guardados.</p>'+slotMarkup('load')+'<button class="menu-back" data-action="back">VOLVER</button></section>';
@@ -2411,12 +2360,6 @@ menuRoot.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b
   else if(a==='new'){ resetGame(); state='character'; menuRoot.hidden=true; characterSel=0; chosenCharacter='ninja'; selIdx=0; }
   else if(a==='shopexit'){state='play';menuRoot.hidden=true;}
   else if(a==='controls'){menuPage='controls';renderMenu();}
-  else if(a==='coop'){menuPage='coop';renderMenu();}
-  else if(a==='createRoom'){createCoopRoom();}
-  else if(a==='joinRoom'){joinCoopRoom();}
-  else if(a==='copyCode'){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(coopCode).then(()=>coopSay('Código copiado. ¡Enviáselo a tu compañero!')).catch(()=>coopSay('No se pudo copiar; anotá el código.'));}else{coopSay('Anotá el código: '+coopCode);}}
-  else if(a==='startCoop'){startCoopStory();}
-  else if(a==='leaveRoom'){coopLeaving=true;if(coopConn){try{coopConn.close();}catch(e){}}if(coopPeer){try{coopPeer.destroy();}catch(e){}}coopConn=null;coopPeer=null;P2=null;remoteView=null;coopRole='solo';coopCode='';coopStatus='';state='title';menuPage='coop';renderMenu();}
   else if(a==='load'){menuPage='load';renderMenu();}
   else if(a==='back'){menuPage='main';renderMenu();}
   else if(a==='resume'){state='play';menuRoot.hidden=true;}
@@ -2444,7 +2387,7 @@ function continueLast(){const i=lastSlot();if(i>=0)loadSlot(i);}
 function titleMain(){
   const em=Array.from({length:22},(_,i)=>'<i style="left:'+((i*47)%100)+'%;animation-delay:-'+((i*1.7)%9).toFixed(1)+'s;animation-duration:'+(6+(i*3)%7)+'s"></i>').join('');
   const li=lastSlot(),d=li>=0?readSlots()[li]:null;
-  return '<div class="embers">'+em+'</div><section class="menu-panel title-wrap"><div class="t-sub">— LA CRIPTA MUTA CADA NIVEL —</div><h2 class="t-logo">CRIPTA<br>ERRANTE</h2><p>Desciende, saquea armas y reliquias y derrota a los veinte guardianes.</p><div class="menu-actions">'+(d?'<button class="primary" data-action="continue">▶ CONTINUAR · Nivel '+d.floorN+' · '+(d.P&&d.P.souls||0)+' almas</button>':'')+'<button class="'+(d?'':'primary')+'" data-action="new">⚔ NUEVA PARTIDA</button><button data-action="load">CARGAR PARTIDA</button><button data-action="coop">♟ MULTIJUGADOR ONLINE</button><div class="row2"><button data-action="diff">DIF: '+DIFFN[diffI]+'</button><button data-action="ach">LOGROS '+Object.keys(ach).length+'/'+ACH.length+'</button></div><div class="row2"><button data-action="howto">? CÓMO JUGAR</button><button data-action="records">★ RÉCORDS</button></div><div class="row2"><button data-action="controls">CONTROLES: '+({pc:'PC',touch:'TÁCTIL',pad:'JOYSTICK'}[controlMode]||'PC')+'</button><button data-action="mute">'+(muted?'SONIDO: NO':'SONIDO: SÍ')+'</button></div></div><div class="t-best">Mejor marca: nivel '+best.floor+' · '+best.souls+' almas</div></section>';
+  return '<div class="embers">'+em+'</div><section class="menu-panel title-wrap"><div class="t-sub">— LA CRIPTA MUTA CADA NIVEL —</div><h2 class="t-logo">CRIPTA<br>ERRANTE</h2><p>Desciende, saquea armas y reliquias y derrota a los veinte guardianes.</p><div class="menu-actions">'+(d?'<button class="primary" data-action="continue">▶ CONTINUAR · Nivel '+d.floorN+' · '+(d.P&&d.P.souls||0)+' almas</button>':'')+'<button class="'+(d?'':'primary')+'" data-action="new">⚔ NUEVA PARTIDA</button><button data-action="load">CARGAR PARTIDA</button><div class="row2"><button data-action="diff">DIF: '+DIFFN[diffI]+'</button><button data-action="ach">LOGROS '+Object.keys(ach).length+'/'+ACH.length+'</button></div><div class="row2"><button data-action="howto">? CÓMO JUGAR</button><button data-action="records">★ RÉCORDS</button></div><div class="row2"><button data-action="controls">CONTROLES: '+({pc:'PC',touch:'TÁCTIL',pad:'JOYSTICK'}[controlMode]||'PC')+'</button><button data-action="mute">'+(muted?'SONIDO: NO':'SONIDO: SÍ')+'</button></div></div><div class="t-best">Mejor marca: nivel '+best.floor+' · '+best.souls+' almas</div></section>';
 }
 function rollMut(){MUT=(floorN>=2&&Math.random()<0.75)?pick(MUTS):null;if(MUT&&state!=='title')toast(MUT.n+' · '+MUT.d,'☠ MUTACIÓN: ');}
 const _gf=genFloor;genFloor=function(){_gf();rollMut();};
@@ -2462,6 +2405,192 @@ const _br=beginRun;beginRun=function(i){_br(i);bumpRuns();};
 document.addEventListener('keydown',e=>{if(state!=='title'||menuRoot.hidden)return;const bs=[...menuRoot.querySelectorAll('button:not(:disabled)')];if(!bs.length)return;let i=bs.indexOf(document.activeElement);
   if(e.key==='ArrowDown'||e.key==='ArrowRight')i=(i+1)%bs.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')i=(i-1+bs.length)%bs.length;
   else if(e.key==='Escape'&&menuPage!=='main'){menuPage='main';renderMenu();return;}else return;e.preventDefault();bs[i].focus();});
+/* ---------- extras v2: contenido nuevo, opciones y menús ---------- */
+Object.assign(WEAPONS, {
+  venom: { name: 'Cetro Venenoso', dmg: 2.2, rate: 0.26, cost: 2, spd: 360, spread: 0.07, n: 1, life: 1.1, col: '#9dff5a', len: 30, poison: true, desc: 'Veneno que sigue dañando' },
+  minigun: { name: 'Ametralladora Rúnica', dmg: 1.7, rate: 0.055, cost: 1, spd: 560, spread: 0.24, n: 1, life: 0.7, col: '#ffe08a', len: 36, desc: 'Lluvia de balas' },
+  hacha: { name: 'Hacha Rúnica', dmg: 12, rate: 0.55, cost: 0, melee: true, range: 58, arc: 2.7, col: '#ffb36b', len: 30, desc: 'Golpe amplio y pesado' }
+});
+CHEST_POOL.push('venom', 'minigun', 'hacha');
+RELICS.push(
+  { name: 'Ojo de Basilisco', desc: '+10% de crítico y +1 daño base', apply: () => { P.crit = Math.min(.75, (P.crit || .05) + .10); P.flatDmg = (P.flatDmg || 0) + 1; } },
+  { name: 'Cántaro de Ámbar', desc: '+25 energía máxima y +0.5 de regeneración', apply: () => { P.maxen += 25; P.en = P.maxen; P.enRegen += .5; } },
+  { name: 'Llama Gemela', desc: '+12% de daño y +1 bomba', apply: () => { P.dmgM *= 1.12; P.bombs = Math.min(9, (P.bombs || 0) + 1); } },
+  { name: 'Piel de Salamandra', desc: '+1 vida máxima y 6% de robo de vida', apply: () => { P.maxhp++; P.hp++; P.lifesteal = (P.lifesteal || 0) + .06; } },
+  { name: 'Campana Sorda', desc: '+3 armadura máxima y +4% de esquiva', apply: () => { P.maxarmor += 3; P.armor = P.maxarmor; P.dodge = Math.min(0.4, (P.dodge || 0) + 0.04); } }
+);
+UPGRADES.push(
+  { name: 'Veneno de víbora', desc: '+12% de daño y +4% de crítico', fn: () => { P.dmgM *= 1.12; P.crit = Math.min(.75, (P.crit || .05) + .04); } },
+  { name: 'Cinturón de bombas', desc: '+2 bombas y +1 armadura máxima', fn: () => { P.bombs = Math.min(9, (P.bombs || 0) + 2); P.maxarmor++; P.armor = P.maxarmor; } },
+  { name: 'Paso de sombra', desc: '+8% de velocidad y +4% de esquiva', fn: () => { P.spdM *= 1.08; P.dodge = Math.min(0.4, (P.dodge || 0) + 0.04); } },
+  { name: 'Ánimo guerrero', desc: 'Recupera 2 vidas y +10% de cadencia', fn: () => { P.hp = Math.min(P.maxhp, P.hp + 2); P.rateM *= 0.9; } }
+);
+SHOP.push(
+  { n: 'Poción mayor (cura total)', c: 24, f: () => { P.hp = P.maxhp; }, ok: () => P.hp < P.maxhp },
+  { n: 'Tónico de crítico (+6%)', c: 20, f: () => { P.crit = Math.min(.75, (P.crit || .05) + .06); }, ok: () => true },
+  { n: 'Amuleto de imán (+50)', c: 12, f: () => { P.magnet = (P.magnet || 80) + 50; }, ok: () => true }
+);
+ALTAR.push({ n: 'Ofrenda de 20 almas → reliquia', ok: () => P.souls >= 20, f: () => { P.souls -= 20; giveRelic(); } });
+ACH.push(
+  { id: 'k100', n: 'Cosechador', d: '100 enemigos en una partida', ok: () => P.kills >= 100 },
+  { id: 'f15', n: 'Más allá', d: 'Llega al nivel 15', ok: () => floorN >= 15 },
+  { id: 'r10', n: 'Relicario', d: '10 reliquias en una partida', ok: () => (P.relics || []).length >= 10 },
+  { id: 'lv10', n: 'Veterano', d: 'Héroe nivel 10', ok: () => (P.level || 1) >= 10 }
+);
+const _he = hitEnemy;
+hitEnemy = function (e, b) { _he(e, b); if (b && b.poison && e.hp > 0) { e.poisonT = 3; e.poisonD = Math.max(.8, b.dmg * .5); } };
+const _ue = updateEnemies;
+updateEnemies = function (dt) {
+  _ue(dt);
+  for (const e of enemies) {
+    if (e.hp > 0 && e.poisonT > 0 && !(e.invul > 0)) {
+      e.poisonT -= dt; e.poisonA = (e.poisonA || 0) + dt;
+      if (e.poisonA >= .5) { e.poisonA = 0; e.hp -= e.poisonD || 1; e.flash = .05; spark(e.x, e.y, '#9dff5a', 2); if (e.hp <= 0) killEnemy(e); }
+    }
+  }
+};
+const _up2 = update;
+update = function (dt) { _up2(dt); if (!OPT.shake) shake = 0; };
+
+/* opciones persistentes */
+const OPT_KEY = 'cripta_opts', VOLS = [0.45, 1, 1.6];
+try { Object.assign(OPT, JSON.parse(localStorage.getItem(OPT_KEY) || '{}')); } catch (e) { /* sin almacenamiento */ }
+function applyOpts() { VOLM = VOLS[OPT.vol] || 1; try { localStorage.setItem(OPT_KEY, JSON.stringify(OPT)); } catch (e) { /* sin almacenamiento */ } }
+applyOpts();
+
+const TIPS = [
+  'Esquivar te hace invulnerable un instante: úsalo para atravesar balas.',
+  'La katana y el hacha desvían o rompen proyectiles enemigos si te acercas.',
+  'Los barriles explotan: llévalos junto a los enemigos.',
+  'Una racha x10 te llena la energía.',
+  'El altar prohibido ofrece pactos poderosos, pero con un precio.',
+  'El Cetro Venenoso sigue dañando aunque dejes de apuntar.',
+  'Las cámaras secretas esconden tesoro, vida y armadura.',
+  'El mercader aparece cada tres niveles: guarda almas.'
+];
+const DIFFD = ['Experiencia estándar.', 'Enemigos con +35% de vida.', 'Enemigos con +80% de vida. Sin piedad.'];
+function seg(act, cur, items, dis) { return '<div class="seg">' + items.map(it => '<button data-action="' + act + '" data-v="' + it[1] + '" class="' + (String(it[1]) === String(cur) ? 'on' : '') + '"' + (dis ? ' disabled' : '') + '>' + it[0] + '</button>').join('') + '</div>'; }
+function barRow(l, v, m, c) { const p = m > 0 ? Math.max(0, Math.min(100, v / m * 100)) : 0; return '<div class="bar-r"><span>' + l + '</span><i><s style="width:' + p + '%;background:' + c + '"></s></i><em>' + Math.ceil(v) + '/' + Math.round(m) + '</em></div>'; }
+const chip = (l, v, c) => '<span class="chip"' + (c ? ' style="border-color:' + c + ';color:' + c + '"' : '') + '>' + l + (v === undefined ? '' : ' <b>' + v + '</b>') + '</span>';
+
+titleMain = function () {
+  const em = Array.from({ length: 26 }, (_, i) => '<i style="left:' + ((i * 41) % 100) + '%;animation-delay:-' + ((i * 1.7) % 9).toFixed(1) + 's;animation-duration:' + (6 + (i * 3) % 7) + 's"></i>').join('');
+  const li = lastSlot(), d = li >= 0 ? readSlots()[li] : null, s = readStats();
+  return '<div class="embers">' + em + '</div><section class="menu-panel title-wrap wide"><div class="t-sub">— LA CRIPTA MUTA CADA NIVEL —</div><h2 class="t-logo">CRIPTA<br>ERRANTE</h2><p>Desciende, saquea armas y reliquias y derrota a los veinte guardianes.</p><div class="menu-actions">'
+    + (d ? '<button class="primary" data-action="continue">▶ CONTINUAR · Nivel ' + d.floorN + ' · ' + ((d.P && d.P.souls) || 0) + ' almas</button>' : '')
+    + '<button class="' + (d ? '' : 'primary') + '" data-action="new">⚔ NUEVA PARTIDA</button>'
+    + '<div class="row2"><button data-action="load">CARGAR PARTIDA</button><button data-action="ach">LOGROS ' + Object.keys(ach).length + '/' + ACH.length + '</button></div>'
+    + '<div class="sec">DIFICULTAD</div>' + seg('setdiff', diffI, DIFFN.map((n, i) => [n, i])) + '<div class="tip" style="min-height:0;margin:0 0 4px">' + DIFFD[diffI] + '</div>'
+    + '<div class="row3"><button data-action="records">★ RÉCORDS</button><button data-action="howto">? AYUDA</button><button data-action="opts">⚙ OPCIONES</button></div>'
+    + '</div><div class="chips">' + chip('MEJOR NIVEL', best.floor) + chip('ALMAS', best.souls) + chip('PARTIDAS', s.runs || 0) + '</div>'
+    + '<div class="tip"><b>CONSEJO</b> · ' + pick(TIPS) + '</div><div class="hint"><span class="kbd">↑</span> <span class="kbd">↓</span> moverte · <span class="kbd">Enter</span> elegir · <span class="kbd">Esc</span> volver</div></section>';
+};
+
+function optionsHTML() {
+  const ip = state === 'pause';
+  return '<section class="menu-panel wide"><h2>OPCIONES</h2><div class="sec">AUDIO</div>'
+    + '<div class="opt-row"><span>Efectos de sonido</span>' + seg('optsfx', muted ? 0 : 1, [['SÍ', 1], ['NO', 0]]) + '</div>'
+    + '<div class="opt-row"><span>Música</span>' + seg('optmus', OPT.music ? 1 : 0, [['SÍ', 1], ['NO', 0]]) + '</div>'
+    + '<div class="opt-row"><span>Volumen</span>' + seg('optvol', OPT.vol, [['BAJO', 0], ['MEDIO', 1], ['ALTO', 2]]) + '</div>'
+    + '<div class="sec">JUEGO</div><div class="opt-row"><span>Temblor de pantalla</span>' + seg('optshk', OPT.shake ? 1 : 0, [['SÍ', 1], ['NO', 0]]) + '</div>'
+    + '<div class="opt-row"><span>Dificultad' + (ip ? ' <small style="color:#8d84a8">(desde el menú principal)</small>' : '') + '</span>' + seg('setdiff', diffI, DIFFN.map((n, i) => [n, i]), ip) + '</div>'
+    + '<div class="sec">CONTROLES</div>' + seg('optmode', controlMode, [['PC', 'pc'], ['TÁCTIL', 'touch'], ['JOYSTICK', 'pad']])
+    + '<div class="sec">PANTALLA</div><div class="menu-actions"><button data-action="optfs">PANTALLA COMPLETA</button></div><button class="menu-back" data-action="optback">VOLVER</button></section>';
+}
+statsHTML = function () {
+  const rl = P.relics || [], cnt = {}; rl.forEach(n => { cnt[n] = (cnt[n] || 0) + 1; });
+  const rows = [['Nivel de cripta', floorN], ['Héroe', 'nivel ' + (P.level || 1)], ['Almas', P.souls], ['Enemigos', P.kills], ['Mejor racha', 'x' + (P.bestCombo || 0)], ['Tiempo', formatRunTime(runElapsed)], ['Daño', 'x' + P.dmgM.toFixed(2) + (P.flatDmg ? ' +' + P.flatDmg : '')], ['Cadencia', 'x' + (1 / P.rateM).toFixed(2)], ['Velocidad', 'x' + P.spdM.toFixed(2)], ['Crítico', Math.round((P.crit || 0) * 100) + '%'], ['Esquiva', Math.round((P.dodge || 0) * 100) + '%'], ['Robo de vida', Math.round((P.lifesteal || 0) * 100) + '%']];
+  return '<section class="menu-panel wide"><h2>ESTADÍSTICAS</h2><div class="codex" style="max-height:none">' + rows.map(r => '<div class="cx"><small>' + r[0] + '</small><b style="margin:0">' + r[1] + '</b></div>').join('') + '</div><div class="sec">RELIQUIAS (' + rl.length + ')</div>'
+    + (rl.length ? '<div class="codex" style="max-height:190px">' + Object.keys(cnt).map(n => { const r = RELICS.find(x => x.name === n); return '<div class="cx"><b>' + n + (cnt[n] > 1 ? ' ×' + cnt[n] : '') + '</b>' + (r ? r.desc : '') + '</div>'; }).join('') + '</div>' : '<p style="margin:4px 0 8px">Aún no tienes reliquias. Derrota jefes o visita el altar.</p>')
+    + '<button class="menu-back" data-action="pauseback">VOLVER</button></section>';
+};
+slotMarkup = function (mode) {
+  return '<div class="slot-grid">' + readSlots().map((d, i) => {
+    let sub = 'Vacío';
+    if (d) { const t = new Date(d.savedAt); sub = 'Nivel ' + d.floorN + ' · ' + ((d.P && d.P.souls) || 0) + ' almas<br>' + (isNaN(t) ? '' : t.toLocaleDateString('es', { day: '2-digit', month: 'short' }) + ' · ') + formatRunTime(d.runElapsed || 0); }
+    return '<button data-slot="' + i + '"' + (!d && mode === 'load' ? ' disabled' : '') + '><b>Slot ' + (i + 1) + '</b><small>' + sub + '</small></button>';
+  }).join('') + '</div>';
+};
+let confirmAct = '';
+function pauseMain() {
+  const ws = (P.weapons || []).map((k, i) => chip((i === P.wi ? '▶ ' : '') + WEAPONS[k].name, undefined, i === P.wi ? '#ffb47c' : '')).join('');
+  return '<section class="menu-panel wide"><h2>PAUSA</h2><p style="margin:0 0 4px">Nivel <b>' + floorN + '</b> · ' + theme.n + ' · Sala ' + (roomI + 1) + '/' + rooms.length + ' · ' + formatRunTime(runElapsed) + '</p>'
+    + '<div class="bars">' + barRow('VIDA', P.hp, P.maxhp, '#ff5a6a') + barRow('ARMADURA', P.armor, P.maxarmor, '#9aa8c8') + barRow('ENERGÍA', P.en, P.maxen, '#58a8ff') + barRow('NIVEL ' + (P.level || 1), P.xp, P.xpNext, '#ffd27a') + '</div>'
+    + '<div class="chips">' + chip('ALMAS', P.souls) + chip('BOMBAS', P.bombs || 0) + chip('RACHA', 'x' + (P.combo || 0)) + chip('BAJAS', P.kills)
+    + (!P.questDone ? chip('MISIÓN', (P.questKills || 0) + '/' + P.questGoal) : '') + (P.buffT > 0 ? chip(String(P.buffKind).toUpperCase(), Math.ceil(P.buffT) + 's', '#ffd27a') : '') + (MUT ? chip('☠ ' + MUT.n, undefined, MUT.c) : '') + '</div>'
+    + '<div class="chips">' + ws + chip('RELIQUIAS', (P.relics || []).length) + '</div>'
+    + '<div class="menu-actions" style="margin-top:12px"><button class="primary" data-action="resume">▶ CONTINUAR</button>'
+    + '<div class="row3"><button data-action="save">GUARDAR</button><button data-action="pload">CARGAR</button><button data-action="saveexit" title="Usa el primer slot libre o el más reciente">GUARDAR Y SALIR</button></div>'
+    + '<div class="row2"><button data-action="stats">ESTADÍSTICAS Y RELIQUIAS</button><button data-action="opts">⚙ OPCIONES</button></div>'
+    + '<div class="row2"><button data-action="mute">' + (muted ? 'SONIDO: NO' : 'SONIDO: SÍ') + '</button><button class="danger" data-action="confirm" data-v="restart">REINICIAR</button></div>'
+    + '<button class="danger" data-action="confirm" data-v="home">SALIR AL MENÚ</button></div>'
+    + '<div class="hint"><span class="kbd">P</span> o <span class="kbd">Esc</span> para continuar</div></section>';
+}
+function confirmHTML() {
+  const m = confirmAct === 'restart' ? ['¿REINICIAR?', 'Empezarás una partida nueva y perderás el progreso no guardado.', 'SÍ, REINICIAR'] : ['¿SALIR AL MENÚ?', 'Volverás al menú principal. Lo que no hayas guardado se perderá.', 'SÍ, SALIR'];
+  return '<section class="menu-panel"><h2>' + m[0] + '</h2><p>' + m[1] + '</p><div class="menu-actions"><button class="primary" data-action="no">NO, VOLVER A PAUSA</button><button class="danger" data-action="yes">' + m[2] + '</button></div></section>';
+}
+const PAUSE_PAGES = ['pause', 'stats', 'save', 'saved', 'load', 'options', 'confirm'];
+function pauseRouter() {
+  if (menuPage === 'stats') return statsHTML();
+  if (menuPage === 'options') return optionsHTML();
+  if (menuPage === 'confirm') return confirmHTML();
+  if (menuPage === 'saved') return '<section class="menu-panel"><h2>PARTIDA GUARDADA</h2><p>Tu aventura quedó guardada correctamente.</p><button class="menu-back" data-action="pauseback">VOLVER A PAUSA</button></section>';
+  if (menuPage === 'save') return '<section class="menu-panel"><h2>GUARDAR PARTIDA</h2><p>Elige un espacio. Si ya hay una partida, se reemplazará.</p>' + slotMarkup('save') + '<button class="menu-back" data-action="pauseback">VOLVER</button></section>';
+  if (menuPage === 'load') return '<section class="menu-panel"><h2>CARGAR PARTIDA</h2><p>Elige uno de los cinco espacios guardados.</p>' + slotMarkup('load') + '<button class="menu-back" data-action="pauseback">VOLVER</button></section>';
+  return pauseMain();
+}
+const _rm2 = renderMenu;
+renderMenu = function () {
+  if (state === 'pause') {
+    menuRoot.hidden = false; if (!PAUSE_PAGES.includes(menuPage)) menuPage = 'pause';
+    menuRoot.innerHTML = pauseRouter();
+  } else if (state === 'title' && menuPage === 'options') { menuRoot.hidden = false; menuRoot.innerHTML = optionsHTML(); }
+  else _rm2();
+  menuRoot.classList.toggle('is-pause', state === 'pause' && !menuRoot.hidden);
+  if (!isTouch && !menuRoot.hidden && (state === 'pause' || menuPage === 'options')) { const b = menuRoot.querySelector('button.primary') || menuRoot.querySelector('button'); if (b) b.focus({ preventScroll: true }); }
+};
+function renderKeep() {
+  const el = document.activeElement, sig = el && menuRoot.contains(el) ? (el.dataset.action || '') + '|' + (el.dataset.v || '') : null, st = menuRoot.scrollTop;
+  menuRoot.classList.add('keep'); renderMenu(); menuRoot.scrollTop = st;
+  if (sig && !isTouch) { const t = [...menuRoot.querySelectorAll('button')].find(b => (b.dataset.action || '') + '|' + (b.dataset.v || '') === sig); if (t) t.focus({ preventScroll: true }); }
+  requestAnimationFrame(() => menuRoot.classList.remove('keep'));
+}
+menuRoot.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled || !b.dataset.action) return;
+  const a = b.dataset.action, v = b.dataset.v;
+  if (a === 'setdiff') { diffI = +v; try { localStorage.setItem('cripta_diff', diffI); } catch (x) { /* sin almacenamiento */ } renderKeep(); }
+  else if (a === 'opts') { menuPage = 'options'; renderMenu(); }
+  else if (a === 'optback') { menuPage = state === 'pause' ? 'pause' : 'main'; renderMenu(); }
+  else if (a === 'optvol') { OPT.vol = +v; applyOpts(); tone(660, 880, .08, 'triangle', .06); renderKeep(); }
+  else if (a === 'optmus') { OPT.music = v === '1'; applyOpts(); renderKeep(); }
+  else if (a === 'optshk') { OPT.shake = v === '1'; applyOpts(); renderKeep(); }
+  else if (a === 'optsfx') { if (muted !== (v === '0')) document.getElementById('btnMute').click(); renderKeep(); }
+  else if (a === 'optmode') { applyMode(v); renderKeep(); }
+  else if (a === 'optfs') toggleFs();
+  else if (a === 'pload') { menuPage = 'load'; renderMenu(); }
+  else if (a === 'confirm') { confirmAct = v; menuPage = 'confirm'; renderMenu(); }
+  else if (a === 'no') { menuPage = 'pause'; renderMenu(); }
+  else if (a === 'yes') {
+    if (confirmAct === 'restart') { resetGame(); state = 'character'; menuRoot.hidden = true; characterSel = 0; chosenCharacter = 'ninja'; selIdx = 0; }
+    else { state = 'title'; menuPage = 'main'; renderMenu(); }
+  } else if (a === 'saveexit') {
+    const arr = readSlots(); let i = arr.findIndex(x => !x); if (i < 0) { i = lastSlot(); if (i < 0) i = 0; }
+    arr[i] = saveSnapshot();
+    if (writeSlots(arr)) { state = 'title'; menuPage = 'main'; renderMenu(); toast('Guardado en el slot ' + (i + 1), '✔ '); } else alert('No se pudo guardar.');
+  }
+});
+document.addEventListener('keydown', e => {
+  if (state !== 'pause' || menuRoot.hidden) return;
+  const k = e.key;
+  if (k === 'Escape' || k === 'p' || k === 'P') { if (menuPage !== 'pause') { menuPage = 'pause'; renderMenu(); e.preventDefault(); e.stopImmediatePropagation(); } return; }
+  if ((k === 'Enter' || k === ' ') && menuRoot.contains(document.activeElement)) { e.stopImmediatePropagation(); return; }
+  const bs = [...menuRoot.querySelectorAll('button:not(:disabled)')]; if (!bs.length) return;
+  let i = bs.indexOf(document.activeElement);
+  if (k === 'ArrowDown' || k === 'ArrowRight') i = (i + 1) % bs.length; else if (k === 'ArrowUp' || k === 'ArrowLeft') i = (i - 1 + bs.length) % bs.length; else return;
+  e.preventDefault(); bs[i < 0 ? 0 : i].focus();
+}, true);
+
 renderMenu();
 
 /* ---------- bucle ---------- */
@@ -2470,9 +2599,7 @@ let last = 0;
 function frame(ts) {
   const dt = Math.min(0.033, (ts - last) / 1000 || 0.016); last = ts;
   if (controlMode === 'pad') { if(state==='play'||state==='pause') pollGamepad(); if(state==='title'||state==='pause'||state==='character'||state==='select'||state==='chestChoice'||state==='shop'||state==='altar') pollMenuGamepad(); }
-  update(dt); syncTouch();
-  /* En móviles del invitado limitamos el dibujo a 30 FPS; la recepción y los controles siguen activos. */
-  if(coopRole!=='guest'){draw();}else{coopGuestDrawT+=dt;if(coopGuestDrawT>=1/30){coopGuestDrawT=0;draw();}}
+  update(dt); syncTouch(); draw();
   requestAnimationFrame(frame);
 }
 if (window.__SMOKE) window.__SMOKE({ applyMode, chooseMode, syncTouch, get controlMode() { return controlMode; }, update, draw, P, startOrResume, beginRun, chooseUpgrade, offerUpgrades, proceedFloor, get state() { return state; }, set state(v) { state = v; }, get enemies() { return enemies; }, get room() { return room; }, get floorN() { return floorN; }, set floorN(v) { floorN = v; }, interact, tryDash, mouse, keys, enterRoom, genFloor, killEnemy, makeEnemy, spawnsRef: () => spawns, rooms: () => rooms, pbRef: () => pb });
