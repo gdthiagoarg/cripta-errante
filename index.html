@@ -338,7 +338,7 @@ const vig = document.createElement('canvas'); vig.width = W; vig.height = H;
   g.fillStyle = gr; g.fillRect(0, 0, W, H);
 })();
 const P = {};
-let coopRole = "solo", coopPeer = null, coopConn = null, coopCode = "", coopStatus = "", P2 = null, remoteView = null, coopInput = {mx:0,my:0,aim:0,fire:false}, coopSendT = 0, coopSnapT = 0, coopLastInput = 0, coopApplying = false, coopLeaving = false;
+let coopRole = "solo", coopPeer = null, coopConn = null, coopCode = "", coopStatus = "", P2 = null, remoteView = null, coopInput = {mx:0,my:0,aim:0,fire:false}, coopSendT = 0, coopSnapT = 0, coopLastInput = 0, coopApplying = false, coopLeaving = false, coopLastFloor = -1, coopLastRoom = -1, coopGuestDrawT = 0;
 let best = { floor: 0, souls: 0 };
 try { const s = localStorage.getItem('cripta_best'); if (s) best = JSON.parse(s); } catch (e) { /* sin almacenamiento */ }
 function saveBest() {
@@ -2338,13 +2338,33 @@ function updateRemoteP2(dt){
   if(coopInput.fire&&P2.cd<=0){const backup=cloneData(P);try{Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,cloneData(P2));fireWeapon(WEAPONS[P.weapons[P.wi]]||WEAPONS.pistol);Object.assign(P2,cloneData(P));}finally{Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,backup);}}
   P2.hitCd=Math.max(0,(P2.hitCd||0)-dt);if(P2.hitCd<=0){const e=enemies.find(e=>e.hp>0&&dist(e,P2)<e.r+P2.r+2);if(e){P2.hp=Math.max(0,P2.hp-1);P2.hitCd=.8;P2.inv=.45;burst(P2.x,P2.y,'#58e0c8',8,80);if(P2.hp<=0){P2.hp=P2.maxhp;P2.x=T*2.2;P2.y=H/2;P2.inv=2;toast('¡Tu compañero volvió a la cripta!');}}}
 }
-function coopSnapshot(){return {floorN,roomI,rooms:cloneData(rooms),grid:cloneData(grid),themeIndex:(floorN-1)%THEMES.length,state,runElapsed,time,P:cloneData(P),P2:cloneData(P2),enemies:cloneData(enemies),spawns:cloneData(spawns),eb:cloneData(eb),pb:cloneData(pb),drops:cloneData(drops),parts:cloneData(parts),texts:cloneData(texts),dying:cloneData(dying),amb:cloneData(amb),hazards:cloneData(hazards),barrels:cloneData(barrels),MUT:cloneData(MUT),banner:cloneData(banner),roomData:cloneData(room)};}
-function applyCoopSnapshot(d){if(!d||coopApplying)return;coopApplying=true;try{const changed=floorN!==d.floorN||roomI!==d.roomI;floorN=d.floorN;roomI=d.roomI;rooms=d.rooms||[];room=rooms[roomI]||d.roomData;grid=d.grid||[];theme=THEMES[d.themeIndex]||THEMES[0];runElapsed=d.runElapsed||0;time=d.time||0;Object.assign(P,cloneData(d.P2||{}));remoteView=cloneData(d.P||{});P2=cloneData(d.P2||{});enemies=d.enemies||[];spawns=d.spawns||[];eb=d.eb||[];pb=(d.pb||[]).map(b=>({...b,hit:new Set(b.hit||[])}));drops=d.drops||[];parts=d.parts||[];texts=d.texts||[];dying=d.dying||[];amb=d.amb||[];hazards=d.hazards||[];barrels=d.barrels||[];MUT=d.MUT||null;banner=d.banner||null;state=d.state||'title';if(['play','upgrade','chestChoice','shop','altar','dead','win','character','select'].includes(state)){menuRoot.hidden=true;}if(changed)buildGrid();grid=d.grid||grid;syncTouch();}catch(e){console.warn('snapshot coop',e);}finally{coopApplying=false;}}
-function sendCoopInput(){if(!coopConn||!coopConn.open||coopRole!=='guest')return;const kd=c=>keys.has(c);let mx=(kd('KeyD')||kd('ArrowRight')?1:0)-(kd('KeyA')||kd('ArrowLeft')?1:0)+pad.mx,my=(kd('KeyS')||kd('ArrowDown')?1:0)-(kd('KeyW')||kd('ArrowUp')?1:0)+pad.my;const mm=Math.hypot(mx,my);if(mm>1){mx/=mm;my/=mm;}const aim=pad.aimOn?Math.atan2(pad.ay,pad.ax):Math.atan2(mouse.y-(P.y||H/2),mouse.x-(P.x||W/2));const fire=pad.aimOn||mouse.down||kd('KeyJ');const now=performance.now();if(now-coopSendT>55){coopSendT=now;try{coopConn.send({type:'input',mx,my,aim,fire});}catch(e){}}}
-function drawRemoteAvatar(rp){if(!rp||!Number.isFinite(rp.x)||!Number.isFinite(rp.y))return;const save=cloneData(P);Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,cloneData(rp));ctx.save();ctx.globalAlpha=.92;ctx.strokeStyle='#58e0c8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(P.x,P.y,13+Math.sin(time*7)*1.5,0,Math.PI*2);ctx.stroke();drawPlayer();ctx.restore();Object.keys(P).forEach(k=>delete P[k]);Object.assign(P,save);}
+function coopSnapshot(){
+  // Enviar solo el estado necesario para jugar: los efectos cosméticos se dibujan localmente.
+  const changed=coopLastFloor!==floorN||coopLastRoom!==roomI;
+  coopLastFloor=floorN;coopLastRoom=roomI;
+  return {floorN,roomI,rooms:changed?rooms:undefined,grid:changed?grid:undefined,themeIndex:(floorN-1)%THEMES.length,state,runElapsed,time,
+    P,P2,enemies,eb,pb:pb.map(b=>({...b,hit:b.hit instanceof Set?Array.from(b.hit):(b.hit||[])})),drops,hazards,barrels,MUT,banner,roomData:room};
+}
+function applyCoopSnapshot(d){
+  if(!d||coopApplying)return;coopApplying=true;
+  try{
+    const changed=floorN!==d.floorN||roomI!==d.roomI;floorN=d.floorN;roomI=d.roomI;
+    if(d.rooms)rooms=d.rooms;room=rooms[roomI]||d.roomData||room;
+    theme=THEMES[d.themeIndex]||THEMES[0];runElapsed=d.runElapsed||0;time=d.time||0;
+    if(d.P2)Object.assign(P,d.P2);remoteView=d.P||remoteView;P2=d.P2||P2;
+    enemies=d.enemies||[];eb=d.eb||[];pb=(d.pb||[]).map(b=>({...b,hit:new Set(b.hit||[])}));drops=d.drops||[];
+    // Partículas, textos flotantes y sombras no viajan por red: ahorra datos y CPU en móviles.
+    parts=[];texts=[];dying=[];amb=[];spawns=[];
+    hazards=d.hazards||[];barrels=d.barrels||[];MUT=d.MUT||null;banner=d.banner||null;state=d.state||'title';
+    if(changed&&d.grid){grid=d.grid;}
+    if(['play','upgrade','chestChoice','shop','altar','dead','win','character','select'].includes(state))menuRoot.hidden=true;
+  }catch(e){console.warn('snapshot coop',e);}finally{coopApplying=false;}
+}
+function sendCoopInput(){if(!coopConn||!coopConn.open||coopRole!=='guest')return;const kd=c=>keys.has(c);let mx=(kd('KeyD')||kd('ArrowRight')?1:0)-(kd('KeyA')||kd('ArrowLeft')?1:0)+pad.mx,my=(kd('KeyS')||kd('ArrowDown')?1:0)-(kd('KeyW')||kd('ArrowUp')?1:0)+pad.my;const mm=Math.hypot(mx,my);if(mm>1){mx/=mm;my/=mm;}const aim=pad.aimOn?Math.atan2(pad.ay,pad.ax):Math.atan2(mouse.y-(P.y||H/2),mouse.x-(P.x||W/2));const fire=pad.aimOn||mouse.down||kd('KeyJ');const now=performance.now();if(now-coopSendT>110){coopSendT=now;try{const ch=coopConn.dataChannel;if(!ch||ch.bufferedAmount<24000)coopConn.send({type:'input',mx,my,aim,fire});}catch(e){}}}
+function drawRemoteAvatar(rp){if(!rp||!Number.isFinite(rp.x)||!Number.isFinite(rp.y))return;/* Copia superficial: dibujar al compañero no necesita serializar todo el personaje en cada frame. */const save={...P};for(const k of Object.keys(P))delete P[k];Object.assign(P,rp);ctx.save();ctx.globalAlpha=.92;ctx.strokeStyle='#58e0c8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(P.x,P.y,13+Math.sin(time*7)*1.5,0,Math.PI*2);ctx.stroke();drawPlayer();ctx.restore();for(const k of Object.keys(P))delete P[k];Object.assign(P,save);}
 const _coopBeginRun=beginRun;beginRun=function(i){_coopBeginRun(i);if(coopRole==='host'&&coopConn)initP2();};
 const _coopEnterRoom=enterRoom;enterRoom=function(i){_coopEnterRoom(i);if(P2){P2.x=T*2.2;P2.y=H/2+30;P2.inv=1;}};
-const _coopUpdate=update;update=function(dt){if(coopRole==='guest'){sendCoopInput();return;} _coopUpdate(dt);if(coopRole==='host'&&coopConn&&coopConn.open){if(state==='play')updateRemoteP2(dt);if(P2&&state!=='title'){coopSnapT+=dt;if(coopSnapT>=.12){coopSnapT=0;try{coopConn.send({type:'snapshot',data:coopSnapshot()});}catch(e){}}}}};
+const _coopUpdate=update;update=function(dt){if(coopRole==='guest'){sendCoopInput();return;} _coopUpdate(dt);if(coopRole==='host'&&coopConn&&coopConn.open){if(state==='play')updateRemoteP2(dt);if(P2&&state!=='title'){coopSnapT+=dt;if(coopSnapT>=.20){coopSnapT=0;try{const ch=coopConn.dataChannel;if(!ch||ch.bufferedAmount<48000)coopConn.send({type:'snapshot',data:coopSnapshot()});}catch(e){}}}}};
 function coopLobbyHTML(){const connected=!!(coopConn&&coopConn.open);const host=coopRole==='host';return '<section class="menu-panel"><h2>SALA COOPERATIVA</h2><p>Compartí este código con tu compañero:</p><div style="font:700 34px var(--mono);letter-spacing:.18em;color:#58e0c8;background:#0d0a16;border:1px solid #514064;padding:12px;margin:10px 0">'+coopCode+'</div><button data-action="copyCode">COPIAR CÓDIGO</button><div style="text-align:left;background:#100c19;border:1px solid #382d4b;padding:12px;margin:12px 0;font-size:12px"><b>JUGADORES ( '+(connected?2:1)+' / 2 )</b><p style="margin:8px 0;color:#7dffb0">● Anfitrión — conectado</p><p style="margin:8px 0;color:'+(connected?'#7dffb0':'#a79cbd')+'">'+(connected?'●':'○')+' Jugador 2 — '+(connected?'conectado':'esperando…')+'</p></div><p>'+(coopStatus||'Esperando al segundo jugador…')+'</p>'+(host?'<button class="primary" data-action="startCoop">COMENZAR HISTORIA</button>':'<p>El anfitrión iniciará la historia cuando estén listos.</p>')+'<button class="menu-back" data-action="leaveRoom">SALIR DE LA SALA</button></section>';}
 
 function renderMenu(){
@@ -2450,7 +2470,9 @@ let last = 0;
 function frame(ts) {
   const dt = Math.min(0.033, (ts - last) / 1000 || 0.016); last = ts;
   if (controlMode === 'pad') { if(state==='play'||state==='pause') pollGamepad(); if(state==='title'||state==='pause'||state==='character'||state==='select'||state==='chestChoice'||state==='shop'||state==='altar') pollMenuGamepad(); }
-  update(dt); syncTouch(); draw();
+  update(dt); syncTouch();
+  /* En móviles del invitado limitamos el dibujo a 30 FPS; la recepción y los controles siguen activos. */
+  if(coopRole!=='guest'){draw();}else{coopGuestDrawT+=dt;if(coopGuestDrawT>=1/30){coopGuestDrawT=0;draw();}}
   requestAnimationFrame(frame);
 }
 if (window.__SMOKE) window.__SMOKE({ applyMode, chooseMode, syncTouch, get controlMode() { return controlMode; }, update, draw, P, startOrResume, beginRun, chooseUpgrade, offerUpgrades, proceedFloor, get state() { return state; }, set state(v) { state = v; }, get enemies() { return enemies; }, get room() { return room; }, get floorN() { return floorN; }, set floorN(v) { floorN = v; }, interact, tryDash, mouse, keys, enterRoom, genFloor, killEnemy, makeEnemy, spawnsRef: () => spawns, rooms: () => rooms, pbRef: () => pb });
