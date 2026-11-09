@@ -1,0 +1,26 @@
+{
+  "id": "/cripta-errante/",
+  "name": "Cripta Errante",
+  "short_name": "Cripta",
+  "description": "Aventura y supervivencia en Cripta Errante",
+  "start_url": "/cripta-errante/",
+  "scope": "/cripta-errante/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    {
+      "src": "/cripta-errante/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/cripta-errante/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
